@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using MovieStoreProject.DataAccess;
 using MovieStoreProject.Entities;
 using MovieStoreProject.Models.MovieModels;
+using MovieStoreProject.Models.MovieModels.Add;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+
 
 
 namespace MovieStoreProject.Controllers
@@ -47,15 +51,23 @@ namespace MovieStoreProject.Controllers
             {
                 throw new InvalidOperationException("Bu film zaten mevcut.");
             }
-            
+
             movie = new Movie();
             movie.MovieName = model.MovieName;
             movie.MovieYear = model.MovieYear;
             movie.MovieCategory = model.MovieCategories;
             movie.Price = model.Price;
             movie.DirectorId = model.DirectorId;
+
+            AddMovieValidator validator = new AddMovieValidator();
+            validator.ValidateAndThrow(model);
+
             _context.Movies.Add(movie);
             _context.SaveChanges();
+
+
+
+
         }
 
         [HttpPut]
