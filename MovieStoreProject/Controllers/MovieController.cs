@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using MovieStoreProject.DataAccess;
 using MovieStoreProject.Entities;
@@ -17,12 +18,14 @@ namespace MovieStoreProject.Controllers
     [Route("[controller]")]
     public class MovieController : ControllerBase
     {
-        
-        private readonly Context _context;
 
-        public MovieController(Context context)
+        private readonly Context _context;
+        private readonly IMapper _mapper;
+
+        public MovieController(Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -52,12 +55,13 @@ namespace MovieStoreProject.Controllers
                 throw new InvalidOperationException("Bu film zaten mevcut.");
             }
 
-            movie = new Movie();
-            movie.MovieName = model.MovieName;
-            movie.MovieYear = model.MovieYear;
-            movie.MovieCategory = model.MovieCategories;
-            movie.Price = model.Price;
-            movie.DirectorId = model.DirectorId;
+            //movie = new Movie();
+            //movie.MovieName = model.MovieName;
+            //movie.MovieYear = model.MovieYear;
+            //movie.MovieCategory = model.MovieCategories;
+            //movie.Price = model.Price;
+            //movie.DirectorId = model.DirectorId;
+            movie = _mapper.Map<Movie>(model);
 
             AddMovieValidator validator = new AddMovieValidator();
             validator.ValidateAndThrow(model);
