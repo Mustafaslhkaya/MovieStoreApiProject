@@ -8,8 +8,8 @@ namespace MovieStoreProject.Models.MovieModels.Add
         public AddMovieValidator()
         {
             RuleFor(command => command.DirectorId).GreaterThan(0);
-            RuleFor(command => command.MovieCategories).NotNull();
-            //RuleFor(command => command.MovieYear.Date).NotEmpty().LessThan(DateTime.Now.Date);
+            RuleFor(command => command.MovieCategories).IsInEnum<AddMovieModel, Entities.CategoryEnum>();
+            RuleFor(command => command.MovieYear.Date).NotEmpty().LessThan(DateTime.Now.Date);
             RuleFor(command=> command.Price).GreaterThan(150);
         }
     }
